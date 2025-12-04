@@ -1,12 +1,37 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { Text, StyleSheet, Image, PanResponder, Animated } from 'react-native'
 
 import theme from '~/styles/theme'
 import size from '~/styles/size'
 
-const MemoryCard = ({ nativeWord, foreignWord, image = null }) => {
+// i want to animate like tinder cards
+
+const MemoryCard = ({ nativeWord, foreignWord, image = null, prev = () => {}, next = () => {} }) => {
+  const position = React.useRef(new Animated.ValueXY()).current
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (e, gesture) => {
+      const x = Math.max(-100, Math.min(100, gesture.dx))
+      position.setValue({ x, y: Math.abs(x) * 0.3})
+    },
+    onPanResponderRelease: (e, gesture) => {
+      if (gesture.dx > 50) prev()
+      else if (gesture.dx < -50) next()
+      Animated.spring(position, {
+        toValue: { x: 0, y: 0 },
+        useNativeDriver: false,
+      }).start()
+    },
+  })
+
+
   return (
-    <View style={styles.card}>
+    <Animated.View
+      style={[styles.card, {
+        transform: [{ translateX: position.x }, { translateY: position.y }]
+      }]}
+      {...panResponder.panHandlers}
+    >
       {image && <Image
         source={{ uri: image }}
         style={styles.image}
@@ -14,7 +39,7 @@ const MemoryCard = ({ nativeWord, foreignWord, image = null }) => {
       />}
       <Text style={styles.foreignWord}>{foreignWord || 'Foreign Word'}</Text>
       <Text style={styles.nativeWord}>{nativeWord || 'Native Word'}</Text>
-    </View>
+    </Animated.View>
   )
 }
 

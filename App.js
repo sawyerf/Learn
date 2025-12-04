@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import Home from '~/screens/Home'
+import { HomeStack, CoursesStack } from '~/screens/Stacks'
 import theme from '~/styles/theme'
 import TabBar from '~/components/TabBar'
 
@@ -38,7 +38,8 @@ const App = () => {
 						}
 					}}
 				>
-					<Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={Home} />
+					<Tab.Screen name="HomeStack" options={{ title: 'Home', icon: "home" }} component={HomeStack} />
+					<Tab.Screen name="CourseStack" options={{ title: 'Courses', icon: "book" }} component={CoursesStack} />
 				</Tab.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

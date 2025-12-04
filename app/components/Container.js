@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     maxWidth: 1000,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 })
 

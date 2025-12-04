@@ -6,4 +6,7 @@ export default StyleSheet.create({
 		flex: 1,
 		backgroundColor: theme.primaryBack,
 	},
+	opacity: ({ pressed, enable = true }) => ({
+		opacity: (pressed && enable) ? 0.5 : 1,
+	}),
 })
